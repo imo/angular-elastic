@@ -171,12 +171,9 @@ mod.directive('elastic', ['$window', 'msdElasticConfig', function($window, confi
          */
 
         // listen
-        if ('onpropertychange' in ta && 'oninput' in ta) {
-          // IE9
-          ta['oninput'] = ta.onkeyup = adjust;
-        } else {
-          ta['oninput'] = adjust;
-        }
+        $ta.on('input', function() {
+            adjust();
+        });
 
         $win.bind('resize', forceAdjust);
 
