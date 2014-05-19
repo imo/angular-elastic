@@ -4,19 +4,20 @@
  * License: MIT
  */
 
-angular.module('monospaced.elastic', [])
+var schedule = require('utils/schedule');
 
-  .constant('msdElasticConfig', {
+var mod = require('utils/angular_mod')(module, 'elastic');
+
+mod.constant('msdElasticConfig', {
     append: ''
-  })
+});
 
-  .directive('msdElastic', ['$timeout', '$window', 'msdElasticConfig', function($timeout, $window, config) {
+mod.directive('elastic', ['$window', 'msdElasticConfig', function($window, config) {
     'use strict';
 
     return {
-      require: 'ngModel',
       restrict: 'A, C',
-      link: function(scope, element, attrs, ngModel) {
+      link: function(scope, element, attrs) {
 
         // cache a reference to the DOM element
         var ta = element[0],
@@ -94,7 +95,6 @@ angular.module('monospaced.elastic', [])
           angular.element(document.body).append(mirror);
         }
 
-        // set resize and apply elastic
         $ta.css({
           'resize': (resize === 'none' || resize === 'vertical') ? 'none' : 'horizontal'
         }).data('elastic', true);
@@ -154,9 +154,9 @@ angular.module('monospaced.elastic', [])
             }
 
             // small delay to prevent an infinite loop
-            $timeout(function() {
+            schedule('elastic small delay (wut)', 1, function() {
               active = false;
-            }, 1);
+            });
 
           }
         }
@@ -180,17 +180,11 @@ angular.module('monospaced.elastic', [])
 
         $win.bind('resize', forceAdjust);
 
-        scope.$watch(function() {
-          return ngModel.$modelValue;
-        }, function(newValue) {
-          forceAdjust();
-        });
-
         scope.$on('elastic:adjust', function() {
           forceAdjust();
         });
 
-        $timeout(adjust);
+        schedule('elastic adjust', 0, adjust);
 
         /*
          * destroy
@@ -202,5 +196,4 @@ angular.module('monospaced.elastic', [])
         });
       }
     };
-
-  }]);
+}]);
