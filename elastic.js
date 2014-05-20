@@ -173,7 +173,7 @@ mod.directive('elastic', ['$window', 'msdElasticConfig', function($window, confi
          */
 
         // listen
-        $ta.on('input', function() {
+        $ta.on('input change', function() {
             adjust();
         });
 
