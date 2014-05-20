@@ -4,6 +4,8 @@
  * License: MIT
  */
 
+define(function(require, exports, module) {
+
 var schedule = require('utils/schedule');
 
 var mod = require('utils/angular_mod')(module, 'elastic');
@@ -194,3 +196,5 @@ mod.directive('elastic', ['$window', 'msdElasticConfig', function($window, confi
       }
     };
 }]);
+
+});
